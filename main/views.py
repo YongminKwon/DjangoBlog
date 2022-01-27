@@ -3,7 +3,7 @@ from .models import Post
 
 # Create your views here.
 def index(request):
-    return render(request, 'main/index.html')
+    return render(request, 'index.html')
 
 def blog(request):
     postlist = Post.objects.all()
@@ -29,3 +29,21 @@ def new_post(request):
             )
         return redirect('/blog/')
     return render(request, 'main/new_post.html')
+
+
+def remove_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('/blog/')
+    return render(request, 'main/remove_post.html', {'Post': post})
+
+def edit_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        post.postname = post.postname
+        post.contents = request.POST.get('contents')
+        post.mainphoto = request.FILES.get('mainphoto')
+        post.save()
+        return redirect('blog')
+    return render(request, 'main/edit_post.html', {'Post': post})

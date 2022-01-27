@@ -3,6 +3,7 @@
     <title>Blog list</title>
 </head>
 <body>
+    {% if user.is_authenticated %}
     <h1>게시판 페이지입니다</h1>
     <table>
         {% for list in postlist %}
@@ -12,5 +13,9 @@
         {% endfor %}
     </table>
     <button><a href="new_post/">글쓰기</a></button>
+    <button><a href="{% url 'common:logout' %}">로그아웃</a></button>
+    {% else %}
+    <button><a href="{% url 'common:login' %}">로그인</a></button>
+    {% endif %}
 </body>
 </html>
